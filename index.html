@@ -38,50 +38,7 @@
   .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
   .hamburger span { width: 24px; height: 2px; background: var(--gold-light); display: block; transition: 0.3s; }
 
-  /* HERO */
-  #home {
-    min-height: 100vh; background: linear-gradient(180deg, var(--hero-start), var(--hero-end));
-    display: flex; flex-direction: column; justify-content: center;
-    position: relative; overflow: hidden; padding: 120px 5vw 80px;
-  }
-  .hero-bg {
-    position: absolute; inset: 0;
-    background-image: radial-gradient(circle at 20% 45%, rgba(103,199,255,0.08) 0%, transparent 45%),
-      radial-gradient(circle at 80% 20%, rgba(67,126,214,0.10) 0%, transparent 40%),
-      linear-gradient(rgba(103,199,255,0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(103,199,255,0.05) 1px, transparent 1px);
-    background-size: auto, auto, 90px 90px, 90px 90px;
-    pointer-events: none;
- /* Hero section layout */
-.hero-inner { 
-  display: grid; 
-  grid-template-columns: 1fr 1fr; 
-  align-items: center; 
-  gap: 60px; 
-  position: relative; 
-  max-width: 1200px; 
-  margin: 0 auto; /* centers the content */
-}
-
-/* Content area */
-.hero-content { 
-  position: relative; 
-}
-
-/* Photo collage */
-.hero-photo-collage {
-  position: relative; 
-  width: 100%; 
-  aspect-ratio: 16 / 9; /* widescreen look */
-  display: grid; 
-  grid-template-columns: 1fr 1fr; 
-  grid-template-rows: 1fr 1fr; 
-  gap: 10px;
-  border-radius: 8px; 
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* subtle professional shadow */
-}
-
+  
 /* Images inside collage */
 .hero-photo-collage img {
   width: 100%; 
