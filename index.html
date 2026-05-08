@@ -1,0 +1,630 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A.R.I.S.E. Initiative — Gitega, Burundi</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green: #4f7fd6; --green-dark: #0f325d; --green-mid: #2f5ea8;
+    --gold: #67c7ff; --gold-light: #a0dcff; --cream: #f4f7fb;
+    --cream-dark: #e6edf6; --white: #ffffff; --text: #0f172a;
+    --text-mid: #556375; --text-light: #7b8a9e;
+    --hero-start: #091b33; --hero-end: #102c52;
+    --surface: #eef4fb; --surface-alt: #ffffff;
+    --border: rgba(15, 30, 60, 0.08); --shadow: 0 24px 80px rgba(10, 20, 45, 0.08);
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: linear-gradient(180deg, var(--cream) 0%, #e8edf4 100%); color: var(--text); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10, 18, 35, 0.96); backdrop-filter: blur(14px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 4vw; height: 64px;
+    border-bottom: 1px solid rgba(103,199,255,0.18);
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-brand img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 1.3rem; color: var(--gold-light); letter-spacing: 0.1em; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: rgba(247,243,236,0.8); text-decoration: none; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold-light); }
+  .nav-cta { background: var(--gold); color: var(--white) !important; padding: 0.4rem 1.1rem; border-radius: 2px; transition: background 0.2s !important; }
+  .nav-cta:hover { background: var(--gold-light) !important; color: var(--green-dark) !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+  .hamburger span { width: 24px; height: 2px; background: var(--gold-light); display: block; transition: 0.3s; }
+
+  /* HERO */
+  #home {
+    min-height: 100vh; background: linear-gradient(180deg, var(--hero-start), var(--hero-end));
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; overflow: hidden; padding: 120px 5vw 80px;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 20% 45%, rgba(103,199,255,0.08) 0%, transparent 45%),
+      radial-gradient(circle at 80% 20%, rgba(67,126,214,0.10) 0%, transparent 40%),
+      linear-gradient(rgba(103,199,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(103,199,255,0.05) 1px, transparent 1px);
+    background-size: auto, auto, 90px 90px, 90px 90px;
+    pointer-events: none;
+  }
+  /* Hero right — collage of real photos */
+  .hero-inner { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 60px; position: relative; max-width: 1200px; }
+  .hero-content { position: relative; }
+  .hero-photo-collage {
+    position: relative; height: 500px;
+    display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px;
+    border-radius: 4px; overflow: hidden;
+  }
+  .hero-photo-collage img {
+    width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s;
+  }
+  .hero-photo-collage img:hover { transform: scale(1.04); }
+  .hero-photo-collage .span2 { grid-column: 1 / -1; }
+  .hero-eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+  .hero-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--gold); }
+  .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 5.5vw, 5.5rem); font-weight: 300; line-height: 1.05; color: var(--cream); margin-bottom: 1.2rem; }
+  .hero-title span { font-style: italic; color: var(--gold-light); font-weight: 400; }
+  .hero-sub { font-size: 1rem; line-height: 1.75; color: rgba(247,243,236,0.65); max-width: 500px; margin-bottom: 2rem; font-weight: 300; }
+  .hero-tagline { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.15rem; color: var(--gold-light); margin-bottom: 2.5rem; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .hero-stats { display: flex; gap: 2.5rem; margin-top: 3rem; }
+  .hero-stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; color: var(--gold-light); line-height: 1; }
+  .hero-stat-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(247,243,236,0.5); margin-top: 0.3rem; }
+
+  /* BUTTONS */
+  .btn-primary { background: var(--gold); color: var(--white); padding: 0.8rem 1.8rem; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; border-radius: 2px; transition: background 0.2s, transform 0.2s; display: inline-block; }
+  .btn-primary:hover { background: var(--gold-light); color: var(--green-dark); transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: var(--cream); padding: 0.8rem 1.8rem; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border: 1px solid rgba(247,243,236,0.3); border-radius: 2px; transition: border-color 0.2s, color 0.2s, transform 0.2s; display: inline-block; }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-1px); }
+
+  /* SECTIONS */
+  section { padding: 90px 5vw; }
+  .section-label { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 1rem; }
+  .section-label::before { content: ''; display: block; width: 22px; height: 1px; background: var(--green); }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3.5vw, 3.2rem); font-weight: 400; line-height: 1.15; color: var(--green-dark); margin-bottom: 1.5rem; }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* ABOUT */
+  #about { background: var(--surface); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: start; margin-top: 50px; }
+  .about-text p { font-size: 1rem; line-height: 1.8; color: var(--text-mid); margin-bottom: 1.1rem; font-weight: 300; }
+  .about-text strong { color: var(--green-dark); font-weight: 600; }
+  .mission-box { background: var(--green-dark); padding: 2.2rem; border-radius: 2px; margin-bottom: 1.2rem; position: relative; overflow: hidden; }
+  .mission-box::before { content: '"'; font-family: 'Cormorant Garamond', serif; font-size: 7rem; color: rgba(201,146,42,0.12); position: absolute; top: -1rem; left: 1rem; line-height: 1; pointer-events: none; }
+  .mission-box h3 { font-family: 'Cormorant Garamond', serif; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+  .mission-box p { font-size: 0.95rem; line-height: 1.7; color: rgba(247,243,236,0.85); font-weight: 300; position: relative; }
+
+  /* ARISE FRAMEWORK */
+  #arise { background: var(--cream-dark); }
+  .arise-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 1px; background: rgba(26,107,60,0.15); margin-top: 50px; border: 1px solid rgba(26,107,60,0.15); border-radius: 2px; overflow: hidden; }
+  .arise-card { background: var(--white); padding: 2.2rem 1.5rem; transition: background 0.3s, transform 0.3s; }
+  .arise-card:hover { background: var(--green-dark); transform: translateY(-4px); }
+  .arise-letter { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 0.6rem; transition: color 0.3s; }
+  .arise-word { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green); margin-bottom: 0.7rem; transition: color 0.3s; }
+  .arise-desc { font-size: 0.85rem; line-height: 1.6; color: var(--text-light); font-weight: 300; transition: color 0.3s; }
+  .arise-card:hover .arise-word { color: var(--gold-light); }
+  .arise-card:hover .arise-desc { color: rgba(247,243,236,0.75); }
+
+  /* PROGRAMS */
+  #programs { background: var(--surface); }
+  .programs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.8rem; margin-top: 50px; }
+  .program-card { border: 1px solid rgba(26,107,60,0.12); border-radius: 2px; padding: 2.2rem; transition: border-color 0.3s, box-shadow 0.3s; }
+  .program-card:hover { border-color: var(--green); box-shadow: 0 8px 40px rgba(26,107,60,0.08); }
+  .program-num { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; color: rgba(201,146,42,0.2); line-height: 1; margin-bottom: 0.8rem; }
+  .program-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--green-dark); margin-bottom: 1rem; }
+  .program-items { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .program-items li { font-size: 0.88rem; color: var(--text-mid); font-weight: 300; padding-left: 1rem; position: relative; }
+  .program-items li::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-size: 0.75rem; }
+
+  /* BABIKORA GUTE */
+  #babikora { background: linear-gradient(135deg, #091b33 0%, #0f2a4a 100%); position: relative; overflow: hidden; }
+  #babikora::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 70% 40%, rgba(103,199,255,0.08) 0%, transparent 55%), radial-gradient(circle at 20% 80%, rgba(79,127,214,0.10) 0%, transparent 50%); pointer-events: none; }
+  .babikora-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; position: relative; }
+  .babikora-logo-wrap { display: flex; justify-content: center; align-items: center; }
+  .babikora-logo-wrap img { width: 280px; height: 280px; object-fit: contain; border-radius: 50%; border: 3px solid rgba(103,199,255,0.22); background: rgba(9,27,51,0.65); padding: 10px; box-shadow: 0 0 60px rgba(103,199,255,0.16); }
+  #babikora .section-label { color: var(--gold); }
+  #babikora .section-label::before { background: var(--gold); }
+  #babikora .section-title { color: var(--cream); }
+  .babikora-desc { font-size: 1rem; line-height: 1.8; color: rgba(247,243,236,0.7); font-weight: 300; margin-bottom: 1.5rem; }
+  .babikora-badges { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .badge { display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(103,199,255,0.10); border: 1px solid rgba(103,199,255,0.22); color: var(--gold-light); font-size: 0.78rem; font-weight: 500; padding: 0.4rem 0.9rem; border-radius: 20px; }
+  .babikora-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .babikora-link { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.4rem; border-radius: 2px; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em; text-decoration: none; transition: transform 0.2s, opacity 0.2s; }
+  .babikora-link:hover { transform: translateY(-2px); opacity: 0.9; }
+  .babikora-link.fb { background: #1877f2; color: white; }
+  .babikora-link.ig { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); color: white; }
+
+  /* DEBATE CHAMPIONSHIP */
+  #championship { background: var(--cream-dark); }
+  .championship-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 60px; align-items: start; margin-top: 50px; }
+  .championship-poster img { width: 100%; border-radius: 4px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+  .championship-info h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--green-dark); margin-bottom: 1rem; }
+  .championship-info p { font-size: 0.95rem; line-height: 1.75; color: var(--text-mid); font-weight: 300; margin-bottom: 1.2rem; }
+  .champ-detail { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.9rem 1.1rem; background: var(--white); border-radius: 2px; border-left: 3px solid var(--gold); margin-bottom: 0.75rem; }
+  .champ-detail-icon { font-size: 1rem; flex-shrink: 0; }
+  .champ-detail p { margin: 0; font-size: 0.88rem; }
+  .champ-detail strong { color: var(--green-dark); font-weight: 600; }
+
+  /* GALLERY / IMPACT */
+  #impact { background: var(--surface); }
+  .impact-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; margin-bottom: 50px; }
+  .impact-stat { background: var(--cream-dark); padding: 2rem; border-radius: 2px; border-bottom: 3px solid var(--gold); text-align: center; }
+  .impact-num { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 300; color: var(--green-dark); line-height: 1; margin-bottom: 0.4rem; }
+  .impact-label { font-size: 0.78rem; color: var(--text-light); font-weight: 500; letter-spacing: 0.04em; line-height: 1.4; }
+
+  /* PHOTO GALLERY */
+  .gallery-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--green-dark); margin-bottom: 1.5rem; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 240px;
+    gap: 10px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .gallery-item { overflow: hidden; position: relative; cursor: pointer; background: #111; }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; display: block; }
+  .gallery-item:hover img { transform: scale(1.07); }
+  .gallery-item.tall { grid-row: span 2; }
+  .gallery-item.wide { grid-column: span 2; }
+  .gallery-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; font-size: 0.78rem; opacity: 0; transition: opacity 0.3s; letter-spacing: 0.04em; }
+  .gallery-item:hover .gallery-caption { opacity: 1; }
+
+  /* ACCOMPLISHMENTS */
+  .accomplishments { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+  .accomplishment { display: flex; align-items: flex-start; gap: 0.75rem; padding: 1rem 1.2rem; background: var(--cream-dark); border-radius: 2px; border-left: 3px solid var(--green); }
+  .accomplishment-icon { font-size: 1rem; flex-shrink: 0; }
+  .accomplishment p { font-size: 0.88rem; color: var(--text-mid); font-weight: 300; line-height: 1.5; }
+
+  /* CENTER */
+  #center { background: var(--green-dark); position: relative; overflow: hidden; }
+  #center::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 80% 50%, rgba(201,146,42,0.1) 0%, transparent 50%), linear-gradient(rgba(201,146,42,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(201,146,42,0.03) 1px, transparent 1px); background-size: auto, 60px 60px, 60px 60px; pointer-events: none; }
+  #center .section-label { color: var(--gold); } #center .section-label::before { background: var(--gold); }
+  #center .section-title { color: var(--cream); }
+  .center-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; margin-top: 50px; position: relative; }
+  .center-features { display: flex; flex-direction: column; gap: 1rem; }
+  .center-feature { display: flex; align-items: flex-start; gap: 1rem; padding: 1.1rem 1.4rem; background: rgba(103,199,255,0.08); border: 1px solid rgba(103,199,255,0.18); border-radius: 2px; transition: background 0.2s, border-color 0.2s; }
+  .center-feature:hover { background: rgba(103,199,255,0.12); border-color: rgba(103,199,255,0.28); }
+  .center-feature-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+  .center-feature-text h4 { font-size: 0.88rem; font-weight: 600; color: var(--gold-light); margin-bottom: 0.25rem; }
+  .center-feature-text p { font-size: 0.83rem; color: rgba(247,243,236,0.6); font-weight: 300; line-height: 1.5; }
+  .center-highlight { background: rgba(103,199,255,0.10); border: 1px solid rgba(103,199,255,0.20); border-radius: 2px; padding: 2.2rem; }
+  .center-highlight h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; color: var(--gold-light); margin-bottom: 1rem; line-height: 1.2; }
+  .center-highlight p { font-size: 0.93rem; line-height: 1.75; color: rgba(247,243,236,0.75); font-weight: 300; margin-bottom: 1.2rem; }
+  .launch-badge { display: inline-block; background: var(--gold); color: white; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.35rem 0.9rem; border-radius: 1px; animation: pulse-badge 2s ease-in-out infinite; }
+  @keyframes pulse-badge { 0%, 100% { opacity: 1; } 50% { opacity: 0.75; } }
+
+  /* GOALS */
+  #goals { background: var(--cream-dark); }
+  .goals-timeline { margin-top: 50px; position: relative; padding-left: 2rem; }
+  .goals-timeline::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(to bottom, var(--green), var(--gold)); }
+  .goal-item { position: relative; padding: 0 0 2.2rem 2.5rem; }
+  .goal-item::before { content: ''; position: absolute; left: -0.42rem; top: 8px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold); border: 2px solid var(--cream-dark); }
+  .goal-year { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem; }
+  .goal-text { font-size: 0.97rem; color: var(--text-mid); font-weight: 300; line-height: 1.6; }
+
+  /* CONTACT */
+  #contact { background: var(--hero-start); position: relative; overflow: hidden; }
+  #contact::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 70%, rgba(103,199,255,0.10) 0%, transparent 50%); pointer-events: none; }
+  #contact .section-label { color: var(--gold); } #contact .section-label::before { background: var(--gold); }
+  #contact .section-title { color: var(--cream); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; margin-top: 50px; position: relative; }
+  .contact-info { display: flex; flex-direction: column; gap: 1.4rem; }
+  .contact-item { display: flex; align-items: flex-start; gap: 1rem; }
+  .contact-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+  .contact-item-text label { display: block; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.25rem; }
+  .contact-item-text a, .contact-item-text span { font-size: 0.93rem; color: rgba(247,243,236,0.8); text-decoration: none; font-weight: 300; transition: color 0.2s; display: block; }
+  .contact-item-text a:hover { color: var(--gold-light); }
+  .social-section h4 { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+  .social-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .social-link { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(103,199,255,0.10); border: 1px solid rgba(103,199,255,0.20); color: rgba(247,243,236,0.9); font-size: 0.78rem; font-weight: 500; padding: 0.45rem 1rem; border-radius: 2px; text-decoration: none; transition: background 0.2s, color 0.2s; }
+  .social-link:hover { background: var(--gold); color: white; }
+  .contact-message { background: rgba(103,199,255,0.08); border: 1px solid rgba(103,199,255,0.16); border-radius: 2px; padding: 2.2rem; }
+  .contact-message h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; color: var(--gold-light); margin-bottom: 1rem; line-height: 1.2; }
+  .contact-message p { font-size: 0.93rem; line-height: 1.75; color: rgba(247,243,236,0.7); font-weight: 300; margin-bottom: 1.5rem; }
+
+  /* FOOTER */
+  footer { background: #08162d; padding: 2.5rem 5vw; border-top: 1px solid rgba(103,199,255,0.18); }
+  .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+  .footer-brand { display: flex; align-items: center; gap: 12px; }
+  .footer-brand img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: var(--gold); letter-spacing: 0.1em; }
+  .footer-tagline { font-size: 0.78rem; color: rgba(247,243,236,0.35); font-style: italic; text-align: center; }
+  .footer-right { text-align: right; }
+  .footer-year { font-size: 0.72rem; color: rgba(247,243,236,0.2); letter-spacing: 0.05em; }
+  .footer-social { display: flex; gap: 0.6rem; justify-content: flex-end; margin-bottom: 0.5rem; }
+  .footer-social a { color: rgba(247,243,236,0.4); font-size: 0.75rem; text-decoration: none; transition: color 0.2s; }
+  .footer-social a:hover { color: var(--gold); }
+
+  /* ANIMATIONS */
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 1000px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-photo-collage { height: 340px; }
+    .about-grid, .center-grid, .contact-grid, .championship-grid { grid-template-columns: 1fr; gap: 40px; }
+    .babikora-inner { grid-template-columns: 1fr; gap: 40px; }
+    .babikora-logo-wrap { order: -1; }
+    .arise-grid { grid-template-columns: repeat(3,1fr); }
+    .programs-grid { grid-template-columns: 1fr; }
+    .impact-stats { grid-template-columns: repeat(2,1fr); }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .accomplishments { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .arise-grid { grid-template-columns: 1fr 1fr; }
+    .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: 220px; }
+    .gallery-item.tall, .gallery-item.wide { grid-column: span 1; grid-row: span 1; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#home">
+    <span class="nav-logo">A.R.I.S.E.</span>
+    <img src="logo.png.jpeg" alt="A.R.I.S.E. Logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#babikora">Babikora Gute</a></li>
+    <li><a href="#championship">Championship</a></li>
+    <li><a href="#impact">Impact</a></li>
+    <li><a href="#center">The Center</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <button class="hamburger" onclick="this.nextElementSibling&&null" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Gitega, Burundi &nbsp;·&nbsp; Founded 2025</div>
+      <h1 class="hero-title">Building the leaders<br>Burundi <span>needs</span></h1>
+      <p class="hero-sub">A youth-led organization equipping young people with practical skills, civic confidence, and digital knowledge that traditional education often does not provide.</p>
+      <p class="hero-tagline">Come curious. Leave capable.</p>
+      <div class="hero-actions">
+        <a href="#programs" class="btn-primary">Our Programs</a>
+        <a href="#contact" class="btn-outline">Get Involved</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">200+</div>
+          <div class="hero-stat-label">Students Trained</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">4</div>
+          <div class="hero-stat-label">Partner Schools</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">14</div>
+          <div class="hero-stat-label">Team Members</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-photo-collage">
+      <img src="debate1.jpg.jpg" alt="Photo 1" class="collage-photo photo1">
+      <img src="debate2.jpg.jpg" alt="Photo 2" class="collage-photo photo2">
+      <img src="debate3.jpg.jpg" alt="Photo 3" class="collage-photo photo3">
+      <img src="debate4.jpg.jpg" alt="Photo 4" class="collage-photo photo4">
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">Who We Are</div>
+  <h2 class="section-title">Youth-led, <em>community-rooted</em></h2>
+  <div class="about-grid fade-up">
+    <div class="about-text">
+      <p>A.R.I.S.E. Initiative was founded in <strong> 2025 by Tujenge Scholars Program (Cohort 9)</strong>. Our team of 14 young leaders brings experience in journalism, storytelling, community organizing, performance arts, and digital innovation.</p>
+      <p>Every member of our team knows sign language, and one member reads and writes Braille — reflecting our deep commitment to <strong>inclusion</strong> at every level of our work.</p>
+      <p>We believe Burundi's future depends on informed, confident, and empowered young people who have the tools and platforms to lead meaningful change.</p>
+    </div>
+    <div>
+      <div class="mission-box">
+        <h3>Our Mission</h3>
+        <p>To empower young Burundians with the skills, confidence, and platforms necessary to participate meaningfully in democratic processes and the 21st century economy.</p>
+      </div>
+      <div class="mission-box">
+        <h3>Our Vision</h3>
+        <p>A Burundi where every young person can advocate for themselves, engage respectfully with others, and contribute actively to sustainable national development.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARISE FRAMEWORK -->
+<section id="arise">
+  <div class="section-label">Our Framework</div>
+  <h2 class="section-title">The <em>A.R.I.S.E.</em> Approach</h2>
+  <div class="arise-grid fade-up">
+    <div class="arise-card"><div class="arise-letter">A</div><div class="arise-word">Advocacy</div><div class="arise-desc">Helping youth use their voices for positive change in their communities and beyond.</div></div>
+    <div class="arise-card"><div class="arise-letter">R</div><div class="arise-word">Respect</div><div class="arise-desc">Promoting peaceful, constructive dialogue across diverse communities and perspectives.</div></div>
+    <div class="arise-card"><div class="arise-letter">I</div><div class="arise-word">Instruction</div><div class="arise-desc">Delivering practical training that sparks real-world action and lasting transformation.</div></div>
+    <div class="arise-card"><div class="arise-letter">S</div><div class="arise-word">Speaking</div><div class="arise-desc">Developing confident, persuasive communication skills for every platform and audience.</div></div>
+    <div class="arise-card"><div class="arise-letter">E</div><div class="arise-word">Empowerment</div><div class="arise-desc">Preparing youth to lead initiatives that strengthen Burundi's sustainable development.</div></div>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section id="programs">
+  <div class="section-label">What We Do</div>
+  <h2 class="section-title">Programs that <em>transform</em></h2>
+  <div class="programs-grid fade-up">
+    <div class="program-card">
+      <div class="program-num">01</div>
+      <div class="program-title">Bridge the Skills Gap</div>
+      <ul class="program-items">
+        <li>Critical thinking &amp; reasoning</li>
+        <li>Public speaking &amp; debate</li>
+        <li>Evidence-based argumentation</li>
+        <li>Digital literacy</li>
+        <li>Constructive dialogue</li>
+      </ul>
+    </div>
+    <div class="program-card">
+      <div class="program-num">02</div>
+      <div class="program-title">Foster Civic Participation</div>
+      <ul class="program-items">
+        <li>Inter-school debate competitions</li>
+        <li>Weekly debate clubs</li>
+        <li>Panel discussions with policymakers</li>
+        <li>Gitega's first debate championship</li>
+      </ul>
+    </div>
+    <div class="program-card">
+      <div class="program-num">03</div>
+      <div class="program-title">Digital Economy Readiness</div>
+      <ul class="program-items">
+        <li>Cryptocurrency &amp; digital finance</li>
+        <li>Artificial intelligence fundamentals</li>
+        <li>Freelancing &amp; global market access</li>
+        <li>Financial inclusion tools</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- BABIKORA GUTE -->
+<section id="babikora">
+  <div class="babikora-inner fade-up">
+    <div>
+      <div class="section-label" style="color:var(--gold)"><span style="display:inline-block;width:22px;height:1px;background:var(--gold);margin-right:0.6rem;"></span>Online Show</div>
+      <h2 class="section-title" style="color:var(--cream)">Babikora <em>Gute?</em></h2>
+      <p class="babikora-desc"><strong style="color:var(--gold-light)">"Babikora Gute?"</strong> — meaning <em>"How do they do it?"</em> in Kirundi — is our inclusion-focused online show that spotlights the lived experiences of people with disabilities in Burundi. Every episode gives a voice to individuals who navigate daily life, work, and community with resilience and dignity.</p>
+      <p class="babikora-desc">The show challenges stigma, breaks down barriers, and builds bridges — showing society that people with disabilities are not problems to be solved, but partners to be embraced. By sharing their stories, we invite communities to listen, learn, and work <em>together</em> toward a truly inclusive Burundi.</p>
+      <p class="babikora-desc">Watch our episodes live and on-demand on Facebook and Instagram.</p>
+      <div class="babikora-badges">
+        <span class="badge">♿ Inclusion Focus</span>
+        <span class="badge">🎙️ Talk Show</span>
+        <span class="badge">📱 Online &amp; Live</span>
+        <span class="badge">🆓 Free to Watch</span>
+      </div>
+      <div class="babikora-links">
+        <a href="https://www.facebook.com/profile.php?id=61584829377472" target="_blank" class="babikora-link fb">
+          <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          Watch on Facebook
+        </a>
+        <a href="https://www.instagram.com/arise20252025/?hl=en" target="_blank" class="babikora-link ig">
+          <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          Watch on Instagram
+        </a>
+      </div>
+    </div>
+    <div class="babikora-logo-wrap">
+      <img src="/logo.png.jpeg" alt="A.R.I.S.E. Logo">
+    </div>
+  </div>
+</section>
+
+<!-- CHAMPIONSHIP -->
+<section id="championship">
+  <div class="section-label">1st Edition — January 2026</div>
+  <h2 class="section-title">Championnat <em>Interscolaire</em></h2>
+  <div class="championship-grid fade-up">
+    <div class="championship-poster">
+    </div>
+    <div class="championship-info">
+      <h3>Gitega's First Inter-School Debate Championship</h3>
+      <p>In January 2026, A.R.I.S.E. Initiative organized the first-ever inter-school students debate championship in Gitega — bringing together four schools in a celebration of young voices and ideas.</p>
+      <p>Under the theme <strong>"La parole des jeunes au service du changement"</strong> (Youth voice in service of change), students from four schools competed across two rounds of high-energy debate.</p>
+      <div class="champ-detail">
+        <div class="champ-detail-icon">🏫</div>
+        <p><strong>Participating Schools:</strong> Lycée Gitega (ENG) · ECOSO · CND · Lycée d'Excellence Musinzira</p>
+      </div>
+      <div class="champ-detail">
+        <div class="champ-detail-icon">📍</div>
+        <p><strong>Semi-Final:</strong> Gitega Study Space — January 10, 2026 at 13h30</p>
+      </div>
+      <div class="champ-detail">
+        <div class="champ-detail-icon">🏆</div>
+        <p><strong>Final:</strong> Alliance Française Gitega — January 17, 2026 at 14h30</p>
+      </div>
+      <div class="champ-detail">
+        <div class="champ-detail-icon">🎟️</div>
+        <p><strong>Entry:</strong> Free — open to all youth of Gitega</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT + GALLERY -->
+<section id="impact">
+  <div class="section-label">Our Impact</div>
+  <h2 class="section-title">What we've <em>built</em></h2>
+  <div class="impact-stats fade-up">
+    <div class="impact-stat"><div class="impact-num">200+</div><div class="impact-label">Students Trained</div></div>
+    <div class="impact-stat"><div class="impact-num">4</div><div class="impact-label">Partner Schools with Debate Clubs</div></div>
+    <div class="impact-stat"><div class="impact-num">1st</div><div class="impact-label">Inter-School Championship in Gitega</div></div>
+    <div class="impact-stat"><div class="impact-num">4+</div><div class="impact-label">Strategic Partners</div></div>
+  </div>
+
+  <div class="gallery-title">From the field — our work in pictures</div>
+  <div class="gallery-grid fade-up">
+    <div class="gallery-item tall">
+      <div class="gallery-caption">Championship — all participants together</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-caption">Debate teams at the championship stage</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-caption">The ARISE team at the championship</div>
+    </div>
+    <div class="gallery-item wide">
+     <div class="gallery-caption">Students gathered at the competition venue</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-caption">Debate training — "Comment lancer l'argument"</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-caption">Weekly debate club session in school</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-caption">Hands-on debate training with students</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-caption">Speakers, judges &amp; community guests</div>
+    </div>
+  </div>
+
+  <div class="accomplishments fade-up" style="margin-top:2rem">
+    <div class="accomplishment"><div class="accomplishment-icon">🏆</div><p>Organized Gitega's first inter-school debate championship</p></div>
+    <div class="accomplishment"><div class="accomplishment-icon">📻</div><p>Partnership with Radio Terimbere &amp; Yaga Burundi</p></div>
+    <div class="accomplishment"><div class="accomplishment-icon">🏫</div><p>Permanent debate clubs in four boarding schools</p></div>
+    <div class="accomplishment"><div class="accomplishment-icon">📅</div><p>Weekly debate programming maintained since launch</p></div>
+    <div class="accomplishment"><div class="accomplishment-icon">🤟</div><p>All 14 team members fluent in sign language</p></div>
+    <div class="accomplishment"><div class="accomplishment-icon">🖨️</div><p>Partnerships with Imprimerie Ingoma &amp; Gitega Study Space</p></div>
+  </div>
+</section>
+
+<!-- CENTER -->
+<section id="center">
+  <div class="section-label">Coming Soon</div>
+  <h2 class="section-title">Arise <em>Gitega Center</em></h2>
+  <div class="center-grid fade-up">
+    <div class="center-features">
+      <div class="center-feature"><div class="center-feature-icon">🌐</div><div class="center-feature-text"><h4>Free Daily Internet</h4><p>Starlink-powered connectivity, free for every young person who walks through the door.</p></div></div>
+      <div class="center-feature"><div class="center-feature-icon">🎙️</div><div class="center-feature-text"><h4>Weekly Panel Discussions</h4><p>Every Friday — conversations with professionals, policymakers, and entrepreneurs.</p></div></div>
+      <div class="center-feature"><div class="center-feature-icon">🤝</div><div class="center-feature-text"><h4>Monthly Networking Events</h4><p>Connecting youth with investors and business leaders shaping Burundi's economy.</p></div></div>
+      <div class="center-feature"><div class="center-feature-icon">💻</div><div class="center-feature-text"><h4>Digital Economy Workshops</h4><p>Hands-on training in the tools and skills of the global digital marketplace.</p></div></div>
+      <div class="center-feature"><div class="center-feature-icon">☕</div><div class="center-feature-text"><h4>Arise Café</h4><p>A social enterprise that funds the center's operations and keeps all programs free.</p></div></div>
+    </div>
+    <div class="center-highlight">
+      <span class="launch-badge">Launching Soon</span>
+      <h3 style="margin-top:1.5rem">A permanent home for Gitega's youth</h3>
+      <p>The Arise Gitega Center is designed to be fully self-sustaining — so young people can access every program, every resource, and every opportunity without ever paying a participation fee.</p>
+      <p>One space. Unlimited potential.</p>
+      <a href="#contact" class="btn-primary">Partner With Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- GOALS -->
+<section id="goals">
+  <div class="section-label">2025 – 2030</div>
+  <h2 class="section-title">Strategic <em>goals</em></h2>
+  <div class="goals-timeline fade-up">
+    <div class="goal-item"><div class="goal-year">Near Term</div><div class="goal-text">Train <strong>500+ students annually</strong> across Gitega's schools and youth centers.</div></div>
+    <div class="goal-item"><div class="goal-year">2025</div><div class="goal-text">Launch and sustain the <strong>Arise Gitega Center</strong> as a self-funding youth hub.</div></div>
+    <div class="goal-item"><div class="goal-year">2026–2027</div><div class="goal-text">Expand A.R.I.S.E. programs to <strong>additional provinces</strong> across Burundi.</div></div>
+    <div class="goal-item"><div class="goal-year">2030</div><div class="goal-text">Reach <strong>10,000+ youth annually</strong> and influence civic education policy at the national level.</div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Get In Touch</div>
+  <h2 class="section-title">Let's <em>connect</em></h2>
+  <div class="contact-grid fade-up">
+    <div class="contact-info">
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div class="contact-item-text"><label>Location</label><span>Gitega, Burundi</span></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📧</div>
+        <div class="contact-item-text">
+          <label>Email</label>
+          <a href="mailto:arise.initiative@gmail.com">arise.initiative@gmail.com</a>
+          <a href="mailto:ariseb.org@gmail.com">ariseb.org@gmail.com</a>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div class="contact-item-text">
+          <label>Phone</label>
+          <a href="tel:+25766443032">+257 66 44 30 32</a>
+          <a href="tel:+25767897574">+257 67 89 75 74</a>
+        </div>
+      </div>
+      <div class="social-section">
+        <h4>Follow Us</h4>
+        <div class="social-links">
+          <a href="https://www.facebook.com/profile.php?id=61584829377472" target="_blank" class="social-link">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+          Facebook 
+          </a>
+          <a href="https://www.instagram.com/arise20252025/?hl=en" target="_blank" class="social-link">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+          
+          </a>
+          <a href="https://www.linkedin.com/in/arise-initiative-1762203b5/" target="_blank" class="social-link">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+          LinkdIn
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="contact-message">
+      <h3>Partner with us to shape Burundi's future</h3>
+      <p>Whether you're a school, NGO, government body, investor, or individual who believes in the power of youth — we want to hear from you.</p>
+      <p>Together, we can build a Burundi where every young person has the tools to lead.</p>
+      <a href="mailto:arise.initiative@gmail.com" class="btn-primary">Send Us a Message</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">A.R.I.S.E. Initiative</span>
+    </div>
+    <div class="footer-tagline">Empowering voices. Strengthening communities. Shaping Burundi's future.</div>
+    <div class="footer-right">
+      <div class="footer-social">
+        <a href="https://www.facebook.com/profile.php?id=61584829377472" target="_blank">Facebook</a>
+        <a href="https://www.instagram.com/arise20252025/?hl=en" target="_blank">Instagram</a>
+        <a href="https://www.linkedin.com/in/arise-initiative-1762203b5/" target="_blank">LinkedIn</a>
+      </div>
+      <div class="footer-year">© 2025 A.R.I.S.E. Initiative, Gitega, Burundi</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
