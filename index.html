@@ -52,18 +52,59 @@
       linear-gradient(90deg, rgba(103,199,255,0.05) 1px, transparent 1px);
     background-size: auto, auto, 90px 90px, 90px 90px;
     pointer-events: none;
+ /* Hero section layout */
+.hero-inner { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  align-items: center; 
+  gap: 60px; 
+  position: relative; 
+  max-width: 1200px; 
+  margin: 0 auto; /* centers the content */
+}
+
+/* Content area */
+.hero-content { 
+  position: relative; 
+}
+
+/* Photo collage */
+.hero-photo-collage {
+  position: relative; 
+  width: 100%; 
+  aspect-ratio: 16 / 9; /* widescreen look */
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  grid-template-rows: 1fr 1fr; 
+  gap: 10px;
+  border-radius: 8px; 
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* subtle professional shadow */
+}
+
+/* Images inside collage */
+.hero-photo-collage img {
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  transition: transform 0.4s;
+}
+
+/* Hover effect for polish */
+.hero-photo-collage img:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-inner {
+    grid-template-columns: 1fr; /* stack on small screens */
+    gap: 30px;
   }
-  /* Hero right — collage of real photos */
-  .hero-inner { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 60px; position: relative; max-width: 1200px; }
-  .hero-content { position: relative; }
   .hero-photo-collage {
-    position: relative; height: 500px;
-    display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px;
-    border-radius: 4px; overflow: hidden;
+    aspect-ratio: 4 / 3; /* taller look on mobile */
   }
-  .hero-photo-collage img {
-    width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s;
-  }
+ 
   .hero-photo-collage img:hover { transform: scale(1.04); }
   .hero-photo-collage .span2 { grid-column: 1 / -1; }
   .hero-eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
